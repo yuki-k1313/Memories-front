@@ -22,12 +22,14 @@ Front-end 프로젝트
 - React.js
 - TypeScript
 - React Router
+- React Cookie
 - Zustand
 - Axios
 - Chart.js
 - React Daum Postcode
-- React Quill
+- Tiptap
 - Day.js
+- Dotenv
 
 ## 🔵 프로젝트 실행 방법
 ### 클론 및 폴더 이동
