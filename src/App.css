@@ -11,6 +11,8 @@
     --Lightmode-Grey: rgba(64, 64, 64, 1);
     --Lightmode-Grey2: rgba(138, 146, 166, 1);
     --Lightmode-Grey3: rgba(238, 238, 238, 1);
+    --Lightmode-Grey4: rgba(113, 113, 113, 1);
+
     --Error: rgba(255, 84, 64, 1);
     --Second: rgba(0, 132, 255, 0.10);
     --Primary: rgba(0, 132, 255, 1);   
@@ -36,12 +38,25 @@ body {
     cursor: pointer;
 }
 
+.button:hover {
+    opacity: 0.85;
+}
+
+.button.fullwidth {
+    box-sizing: border-box;
+    width: 100%;
+}
+
 .button.disable {
     background-color: var(--Lightmode-Grey3);
 
     color: var(--Lightmode-Grey2);
 
     cursor: default;
+}
+
+.button.disable:hover {
+    opacity: 1;
 }
 
 .button.second {
@@ -54,4 +69,20 @@ body {
     background-color: var(--Primary);
 
     color: var(--White);
+}
+
+.link {
+    text-align: center;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 175%;
+
+    cursor: pointer;
+
+    color: var(--Lightmode-Grey4);
+}
+
+.link:hover {
+    color: var(--Lightmode-Grey);
+    font-weight: 600;
 }
