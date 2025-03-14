@@ -25,7 +25,7 @@ export default function Auth() {
             <div className='auth-box'>
                 {page === 'sign-in' ? 
                 <SignIn onPageChange={onPageChangeHandler} /> : 
-                <SignUp onpageChange={onPageChangeHandler} />
+                <SignUp onPageChange={onPageChangeHandler} />
                 }
             </div>
         </div>

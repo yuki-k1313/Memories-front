@@ -1,21 +1,24 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { Address, useDaumPostcodePopup } from 'react-daum-postcode';
-import { AuthPage } from 'src/types/aliases';
-
-import './style.css';
 
 import InputBox from 'src/components/InputBox';
 
+import { AuthPage } from 'src/types/aliases';
+
+import './style.css';
+import { idCheckRequest } from 'src/apis';
+import { IdCheckRequestDto } from 'src/apis/dto/request/auth';
+import { ResponseDto } from 'src/apis/dto/response';
 
 // interface: 회원가입 컴포넌트 속성 //
 interface Props {
-    onpageChange: (page: AuthPage) => void;
-}
+    onPageChange: (page: AuthPage) => void;
+    }
 
-// component: 회원가입 컴포넌트 //
+    // component: 회원가입 컴포넌트 //
 export default function SignUp(props: Props) {
 
-    const { onpageChange } = props;
+    const { onPageChange } = props;
 
     // state: 사용자 이름 상태 //
     const [userName, setUserName] = useState<string>('');
@@ -36,7 +39,7 @@ export default function SignUp(props: Props) {
     const [userIdMessage, setUserIdMessage] = useState<string>('');
     // state: 사용자 비밀번호 메세지 상태 //
     const [userPasswordMessage, setUserPasswordMessage] = useState<string>('');
-    // state: 사용자 비밀번호확인 메세지 상태 //
+    // state: 사용자 비밀번호 확인 메세지 상태 //
     const [userPasswordCheckMessage, setUserPasswordCheckMessage] = useState<string>('');
     // state: 사용자 주소 메세지 상태 //
     const [userAddressMessage, setUserAddressMessage] = useState<string>('');
@@ -45,18 +48,18 @@ export default function SignUp(props: Props) {
     const [userIdMessageError, setUserIdMessageError] = useState<boolean>(false);
 
     // state: 사용자 아이디 중복 확인 상태 //
-    const [isUserIdChecked, setUserIdChecked] = useState<boolean>(false);
+    const [isUserIdChecked, setUserIdChecked] = useState<boolean>(false); 
     // state: 사용자 비밀번호 패턴 일치 상태 //
     const [isUserPasswordChecked, setUserPasswordChecked] = useState<boolean>(false);
     // state: 사용자 비밀번호 동일 여부 상태 //
     const [isUserPasswordEqual, setUserPasswordEqual] = useState<boolean>(false);
     
-
     // variable: 중복 확인 버튼 활성화 //
     const isUserIdCheckButtonActive = userId !== '';
     // variable: 회원가입 버튼 활성화 //
-    const isSignUpButtonActive = userName && userId && userPassword && userPasswordCheck && userAddress && 
-    isUserIdChecked && isUserPasswordChecked && isUserPasswordEqual;
+    const isSignUpButtonActive = 
+        userName && userId && userPassword && userPasswordCheck && userAddress && 
+        isUserIdChecked && isUserPasswordChecked && isUserPasswordEqual;
     // variable: 회원가입 버튼 클래스 //
     const signUpButtonClass = `button ${isSignUpButtonActive ? 'primary' : 'disable'} fullwidth`;
 
@@ -64,10 +67,26 @@ export default function SignUp(props: Props) {
     const open = useDaumPostcodePopup();
 
     // function: 다음 포스트 코드 완료 처리 함수 //
-    const daumPostCompletHandler = (data: Address) => {
+    const daumPostCompleteHandler = (data: Address) => {
         const { address } = data;
         setUserAddress(address);
         setUserAddressMessage('');
+    };
+
+    // function: id check response 처리 함수 //
+    const idCheckResponse = (responseBody: ResponseDto | null) => {
+        const message = 
+        !responseBody ? '서버에 문제가 있습니다' :
+        responseBody.code === 'DBE' ? '서버에 문제가 있습니다' :
+        responseBody.code === 'EU' ? '이미 사용중인 아이디입니다' :
+        responseBody.code === 'VF' ? '아이디를 입력하세요' :
+            '사용 가능한 아이디입니다';
+
+        const isSuccess = responseBody !== null && responseBody.code === 'SU';
+
+        setUserIdMessage(message);
+        setUserIdMessageError(!isSuccess);
+        setUserIdChecked(isSuccess);
     };
 
     // event handler: 사용자 이름 변경 이벤트 처리 //
@@ -104,10 +123,6 @@ export default function SignUp(props: Props) {
     const onUserPasswordCheckChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
         setUserPasswordCheck(value);
-
-        const isMatch = value === userPassword;
-        const message = isMatch ? '' : '비밀번호가 일치하지 않습니다.'
-        setUserPasswordCheckMessage(message);
     };
 
     // event handler: 사용자 주소 변경 이벤트 처리 //
@@ -124,34 +139,30 @@ export default function SignUp(props: Props) {
 
     // event handler: 중복 확인 버튼 클릭 이벤트 처리 //
     const onCheckUserIdClickHandler = () => {
-        if(!isUserIdCheckButtonActive) return;
-
-        const idList = ['qwer1234', 'rewq4321', 'poiu0987'];
-        const isExist = idList.includes(userId);
-        const message = isExist ? '이미 사용중인 아이디 입니다.' : '사용 가능한 아이디 입니다.';
-        setUserIdMessage(message);
-        setUserIdMessageError(isExist);
-        setUserIdChecked(!isExist);
+        if (!isUserIdCheckButtonActive) return;
+        
+        const requestBody: IdCheckRequestDto = { userId };
+        idCheckRequest(requestBody).then(idCheckResponse);
     };
 
     // event handler: 주소 검색 버튼 클릭 이벤트 처리 //
     const onSearchAddressClickHandler = () => {
-        open({ onComplete: daumPostCompletHandler });
+        open({ onComplete: daumPostCompleteHandler });
     };
 
     // event handler: 회원가입 버튼 클릭 이벤트 처리 //
-    const onSingUpClickHandler = () => {
-        if(!userName) setUserNameMessage('이름을 입력해주세요.');
-        if(!userPassword) setUserPasswordMessage('비밀번호를 입력해주세요.')
-        if(!userAddress) setUserAddressMessage('주소를 입력해주세요.');
-        if(!isUserIdChecked) {
-            setUserIdMessage('아이디 중복 확인해주세요.')
+    const onSignUpClickHandler = () => {
+        if (!userName) setUserNameMessage('이름을 입력해주세요');
+        if (!userPassword) setUserPasswordMessage('비밀번호를 입력해주세요');
+        if (!userAddress) setUserAddressMessage('주소를 입력해주세요');
+        if (!isUserIdChecked) {
+            setUserIdMessage('아이디 중복 확인해주세요.');
             setUserIdMessageError(true);
-        } 
-        if(!isSignUpButtonActive) return;
+        }
+        if (!isSignUpButtonActive) return;
 
         alert('회원가입!');
-    };
+    };    
 
     // effect: 사용자 비밀번호 또는 사용자 비밀번호 확인이 변경될시 실행할 함수 //
     useEffect(() => {
@@ -189,8 +200,8 @@ export default function SignUp(props: Props) {
 
             </div>
             <div className='button-container'>
-                <div className={signUpButtonClass} onClick={onSingUpClickHandler}>회원가입</div>
-                <div className='link' onClick={() => onpageChange('sign-in')}>로그인</div>
+                <div className={signUpButtonClass} onClick={onSignUpClickHandler}>회원가입</div>
+                <div className='link' onClick={() => onPageChange('sign-in')}>로그인</div>
             </div>
         </div>
     )
