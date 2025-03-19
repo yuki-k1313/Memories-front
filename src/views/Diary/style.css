@@ -61,3 +61,80 @@
     flex-direction: column;
     gap: 24px;
 }
+
+#diary-main-wrapper .diary-list-table {
+    border-radius: 10px;
+
+    background-color: var(--White);
+}
+
+.diary-list-table>.tr {
+    display: flex;
+    box-sizing: border-box;
+    height:  50px;
+    border-bottom: 1px solid var(--Lightmode-Grey3);
+
+    cursor: pointer;
+}
+
+.diary-list-table>.tr:first-child {
+    cursor: default;
+}
+
+.diary-list-table>.tr:last-child {
+    border: none;
+}
+
+.diary-list-table .th,
+.diary-list-table .td {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    box-sizing: border-box;
+    width: 192px;
+    border-right: 1px solid var(--Lightmode-Grey3);
+
+    color: var(--Lightmode-Grey);
+
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.diary-list-table .td {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+}
+
+.diary-list-table .th:last-child,
+.diary-list-table .td:last-child {
+    border: none;
+}
+
+.diary-list-table .th.title,
+.diary-list-table .td.title {
+    display: block;
+
+    flex: 1;
+    justify-content: start;
+
+    box-sizing: border-box;
+    padding: 0 60px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 50px;
+}
+
+.diary-list-table .td .feeling-box {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+#diary-main-wrapper .pagination-container {
+    display: flex;
+    justify-content: center;
+}
