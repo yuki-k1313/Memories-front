@@ -1,10 +1,8 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from 'react';
 
 import { useNavigate } from 'react-router';
-
 import { ACCESS_TOKEN, DIARY_VIEW_ABSOLUTE_PATH, DIARY_WRITE_ABSOLUTE_PATH } from 'src/constants';
 import { Diary } from 'src/types/interfaces';
-
 import { usePagination } from 'src/hooks';
 import Pagination from 'src/components/Pagination';
 import { getMyDiaryRequest } from 'src/apis';

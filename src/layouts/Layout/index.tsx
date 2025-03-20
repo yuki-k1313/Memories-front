@@ -1,8 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { Outlet, useLocation, useNavigate } from 'react-router'
+import React, { useEffect, useRef, useState } from 'react';
 
+import { Outlet, useLocation, useNavigate } from 'react-router';
 import { ACCESS_TOKEN, AUTH_ABSOLUTE_PATH, CONCENTRATION_TEST_ABSOLUTE_PATH, DIARY_ABSOLUTE_PATH, MAIN_ABSOLUTE_PATH, MEMORY_TEST_ABSOLUTE_PATH, ROOT_PATH } from 'src/constants';
 import { useCookies } from 'react-cookie';
+import { getSignInUserRequest } from 'src/apis';
+import { GetSignInUserResponseDto } from 'src/apis/dto/response/user';
+import { ResponseDto } from 'src/apis/dto/response';
+import { useSignInUserStore } from 'src/stores';
 
 import './style.css';
 
@@ -19,6 +23,9 @@ export default function Layout() {
     // state: My Content List 요소 참조 //
     const MyContentListRef = useRef<HTMLDivElement | null>(null);
 
+    // state: 로그인 유저 정보 상태 //
+    const { setUserId, setName, setProfileImage, setAddress, setDetailAddress, setGender, setAge, resetSignInUser } = useSignInUserStore();
+
     // state: My Content 드롭다운 상태 //
     const [showMyContent, setShowMyContent] = useState<boolean>(false);
 
@@ -29,6 +36,31 @@ export default function Layout() {
     const memoryTestClass = pathname.startsWith(MEMORY_TEST_ABSOLUTE_PATH) ? 'navigation-item active' : 'navigation-item';
     // variable: 집중력 검사 클래스 //
     const concentrationTestClass = pathname.startsWith(CONCENTRATION_TEST_ABSOLUTE_PATH) ? 'navigation-item active' : 'navigation-item';
+
+    // function: get sign in user response 처리 함수 //
+    const getSignInUserResponse = (responseBody: GetSignInUserResponseDto | ResponseDto | null) => {
+        const message = 
+            !responseBody ? '서버에 문제가 있습니다.' :
+            responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' :
+            responseBody.code === 'AF' ? '인증에 실패했습니다.' : '';
+
+        const isSuccess = responseBody !== null && responseBody.code === 'SU';
+        if(!isSuccess) {
+            alert(message);
+            removeCookie(ACCESS_TOKEN, { path: ROOT_PATH });
+            resetSignInUser();
+            return;
+        }
+
+        const { userId, name, profileImage, address, detailAddress, gender, age } = responseBody as GetSignInUserResponseDto;
+        setUserId(userId);
+        setName(name);
+        setProfileImage(profileImage);
+        setAddress(address);
+        setDetailAddress(detailAddress);
+        setGender(gender);
+        setAge(age);
+    };
 
     //event handler: 홈 클릭 이벤트 처리 //
     const onHomeClickHandler = () => {
@@ -58,9 +90,16 @@ export default function Layout() {
     // event handler: 로그아웃 클릭 이벤트 처리 //
     const onSignOutClickHandler = () => {
         removeCookie(ACCESS_TOKEN, { path: ROOT_PATH });
+        resetSignInUser();
     };
 
     // effect: cookie의 accessToken이 변경될 시 실행할 함수 //
+    useEffect(() => {
+        if(!cookies[ACCESS_TOKEN]) return;
+        getSignInUserRequest(cookies[ACCESS_TOKEN]).then(getSignInUserResponse);
+    }, [cookies[ACCESS_TOKEN]]);
+
+    // effect: cookie의 accessToken과 경로가 변경될 시 실행할 함수 //
     useEffect(() => {
         if(!cookies[ACCESS_TOKEN]) navigator(AUTH_ABSOLUTE_PATH);
     },[cookies[ACCESS_TOKEN], pathname]);
