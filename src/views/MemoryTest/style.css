@@ -1,9 +1,9 @@
-#memory_test_wrapper {
+#memory-test-wrapper {
 	margin: 0 auto;
 	width: 1180px;
 }
 
-#memory_test_wrapper .container {
+#memory-test-wrapper .container {
 	display: flex;
 	flex-direction: column;
 	gap: 30px;
@@ -14,21 +14,21 @@
 	background-color: var(--White);
 }
 
-#memory_test_wrapper .description-box {
+#memory-test-wrapper .description-box {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	gap: 16px;
 }
 
-#memory_test_wrapper .description-box .title {
+#memory-test-wrapper .description-box .title {
 	color: var(--Lightmode-Grey);
 
 	font-size: 24px;
 	font-weight: 700;
 }
 
-#memory_test_wrapper .description-box .description {
+#memory-test-wrapper .description-box .description {
 	color: var(--Lightmode-Grey);
 
 	font: 16px;
@@ -39,7 +39,7 @@
 	text-align: center;
 }
 
-#memory_test_wrapper .test-box {
+#memory-test-wrapper .test-box {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -50,7 +50,7 @@
 	background-color: var(--Beige);
 }
 
-#memory_test_wrapper .card-container {
+#memory-test-wrapper .card-container {
 	display: grid;
 	grid-template-columns: 100px 100px 100px 100px;
 	grid-template-rows: 100px 100px 100px 100px;
@@ -58,7 +58,7 @@
 
 }
 
-#memory_test_wrapper .card-container .reversed-card {
+#memory-test-wrapper .card-container .reversed-card {
 	background-image: url(src/assets/images/question-mark.png);
 	background-color: rgba(110, 125, 147, 1);
 	background-position: 50% 50%;

@@ -128,7 +128,7 @@ export const getSignInUserRequest = async (accessToken: string) => {
 
 // function: post memory API 요청 함수 //
 export const postMemoryRequest = async (requestBody: PostMemoryRequestDto, accessToken: string) => {
-    const responseBody = await axios.post(POST_MEMORY_URL,requestBody ,bearerAuthorization(accessToken))
+    const responseBody = await axios.post(POST_MEMORY_URL, requestBody ,bearerAuthorization(accessToken))
         .then(responseSuccessHandler)
         .catch(responseErrorHandler);
     return responseBody;

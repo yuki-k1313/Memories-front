@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import './style.css';
+
 import { MemoryCard } from 'src/types/interfaces';
 import { useCookies } from 'react-cookie';
-import { ACCESS_TOKEN, MEMORY_TEST_COMPLETE_ABSOLUTE_PATH } from 'src/constants';
+import { ACCESS_TOKEN, MEMORY_DESCRIPTION, MEMORY_TEST_COMPLETE_ABSOLUTE_PATH } from 'src/constants';
 import { PostMemoryRequestDto } from 'src/apis/dto/request/test';
 import { postMemoryRequest } from 'src/apis';
 import { ResponseDto } from 'src/apis/dto/response';
 import { useNavigate } from 'react-router';
+
+import './style.css';
+import { useMemoryTestStore } from 'src/stores';
 
 // interface: 메모리 검사 카드 컴포넌트 속성 //
 interface CardProps {
@@ -30,9 +33,6 @@ function Card({ memoryCard, onClick }: CardProps) {
 	)
 }
 
-// variable: 기억력 검사 설명 //
-const DESCRIPTION = '16개의 뒤집혀진 카드의 앞면을 기억하여\n동일한 앞면의 카드 두 개를 연속해서 뒤집어\n모두 앞면으로 돌리면 성공입니다.\n검사 시작부터 모두 돌리는데 까지 걸린 시간을 측정합니다.'
-
 // variable: 색상 리스트 //
 const COLORS = ['#CF3832', '#A6AAA4', '#B40089', '#57A365', '#334194', '#F8F253', '#DD883D', '#00AFFF']
 // variable: 무작위 색상 리스트 //
@@ -55,7 +55,7 @@ export default function MemoryTest() {
 	// state: 완료 상태 //
 	const [isFinish, setFinish] = useState<boolean>(false);
 	// state: 측정된 시간 상태 //
-	const [measurementTime, setMeasurementTime] = useState<number>(0);
+	const {measurementTime, setMeasurementTime} = useMemoryTestStore();
 
 	// variable: access token //
 	const accessToken = cookies[ACCESS_TOKEN];
@@ -133,7 +133,7 @@ export default function MemoryTest() {
 
 	// effect: 검사 카드 리스트가 변경될시 실행할 함수 //
 	useEffect(() => {
-		if(startTime && memoryCards.length && memoryCards.every(card => !card.isReverse)) {
+		if (startTime && memoryCards.length && memoryCards.every(card => !card.isReverse)) {
 			setFinish(true);
 			const measurementTime = Math.floor((Date.now() - startTime) / 1000);
 			setMeasurementTime(measurementTime);
@@ -142,7 +142,7 @@ export default function MemoryTest() {
 
 	// effect: 종료 상태가 변경될시 실행할 함수 //
 	useEffect(() => {
-		if(!isFinish || !accessToken) return;
+		if (!isFinish || !accessToken) return;
 		const requestBody: PostMemoryRequestDto = {
 			measurementTime
 		};
@@ -151,11 +151,11 @@ export default function MemoryTest() {
 
 	// render: 기억력 검사 화면 컴포넌트 렌더링 //
 	return (
-		<div id='memory_test_wrapper'>
+		<div id='memory-test-wrapper'>
 			<div className='container'>
 				<div className='description-box'>
 					<div className='title'>기억력 검사</div>
-					<div className='description'>{DESCRIPTION}</div>
+					<div className='description'>{MEMORY_DESCRIPTION}</div>
 				</div>
 				<div className='test-box'>
 					{isStarted ? 
