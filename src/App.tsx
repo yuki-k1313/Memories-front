@@ -5,13 +5,13 @@ import { useCookies } from 'react-cookie';
 import Layout from './layouts/Layout';
 import Auth from './views/Auth';
 import { ACCESS_TOKEN, AUTH_ABSOLUTE_PATH, AUTH_PATH, CONCENTRATION_TEST_COMPLETE_PATH, CONCENTRATION_TEST_PATH, DIARY_PATH, DIARY_UPDATE_PATH, DIARY_VIEW_PATH, DIARY_WRITE_PATH, MAIN_ABSOLUTE_PATH, MAIN_PATH, MEMORY_TEST_COMPLETE_PATH, MEMORY_TEST_PATH, OTHERS_PATH } from './constants';
-
 import DiaryMain from './views/Diary';
 import DiaryWrite from './views/Diary/Write';
 import DiaryDetail from './views/Diary/Detail';
+import DiaryUpdate from './views/Diary/Update';
+import MemoryTest from './views/MemoryTest';
 
 import './App.css';
-import DiaryUpdate from './views/Diary/Update';
 
 // Router 구성
 // - /auth : 로그인 및 회원가입 페이지
@@ -35,7 +35,7 @@ function App() {
         <Route path={MAIN_PATH} element={<>메인 페이지</>} />
 
         <Route path={MEMORY_TEST_PATH}>
-          <Route index element={<>기억력 검사 페이지</>} />
+          <Route index element={<MemoryTest />} />
           <Route path={MEMORY_TEST_COMPLETE_PATH} element={<>기억력 검사 완료 페이지</>} />
         </Route>
 
