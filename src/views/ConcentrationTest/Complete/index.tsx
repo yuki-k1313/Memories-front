@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-import { useNavigate } from 'react-router';
 
 import { ACCESS_TOKEN, CONCENTRATION_DESCRIPTION, CONCENTRATION_TEST_ABSOLUTE_PATH } from 'src/constants';
 import { useConcentrationTestStore } from 'src/stores';
@@ -9,6 +8,7 @@ import { useCookies } from 'react-cookie';
 import { GetConcentrationResponseDto } from 'src/apis/dto/response/test';
 import { ResponseDto } from 'src/apis/dto/response';
 import { usePagination } from 'src/hooks';
+import { useNavigate } from 'react-router';
 import Pagination from 'src/components/Pagination';
 
 import './style.css';

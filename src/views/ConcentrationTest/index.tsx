@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import './style.css';
 import { ACCESS_TOKEN, CONCENTRATION_DESCRIPTION, CONCENTRATION_TEST_COMPLETE_ABSOLUTE_PATH } from 'src/constants';
 import { useConcentrationTestStore } from 'src/stores';
 import { postConcentrationRequest } from 'src/apis';
@@ -9,9 +8,11 @@ import { PostConcentrationRequestDto } from 'src/apis/dto/request/test';
 import { ResponseDto } from 'src/apis/dto/response';
 import { useNavigate } from 'react-router';
 
+import './style.css';
+
 // variable: 전체 시간 (60초) //
 const TOTAL_TIME = 60 * 1000;
-// variable: 별 표시 시간 (0.25초) //
+// variable: 별 표시 시간 (0.초) //
 const STAR_TIME = 250;
 // variable: 별 표시 횟수 //
 const STAR_COUNT = 20;
