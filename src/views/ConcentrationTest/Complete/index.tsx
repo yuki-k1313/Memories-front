@@ -84,9 +84,9 @@ export default function ConcentrationTestComplete() {
 
 	// effect: 컴포넌트 로드시 실행할 함수 //
 	useEffect(() => {
-		// if(measurementScore === -1 || errorCount === -1) {
-		// 	navigator(CONCENTRATION_TEST_ABSOLUTE_PATH);
-		// }
+		if(measurementScore === -1 || errorCount === -1) {
+			navigator(CONCENTRATION_TEST_ABSOLUTE_PATH);
+		}
 		if(!accessToken) return;
 		getConcentrationRequest(accessToken).then(getConcentrationResponse);
 	}, []);
