@@ -13,6 +13,8 @@ import MemoryTest from './views/MemoryTest';
 
 import './App.css';
 import MemoryTestComplete from './views/MemoryTest/Complete';
+import ConcentrationTest from './views/ConcentrationTest';
+import ConcentrationTestComplete from './views/ConcentrationTest/Complete';
 
 // Router 구성
 // - /auth : 로그인 및 회원가입 페이지
@@ -41,8 +43,8 @@ function App() {
         </Route>
 
         <Route path={CONCENTRATION_TEST_PATH}>
-          <Route index element={<>집중력 검사 페이지</>} />
-          <Route path={CONCENTRATION_TEST_COMPLETE_PATH} element={<>집중력 검사 완료 페이지</>} />
+          <Route index element={<ConcentrationTest />} />
+          <Route path={CONCENTRATION_TEST_COMPLETE_PATH} element={<ConcentrationTestComplete />} />
         </Route>
 
         <Route path={DIARY_PATH}>
