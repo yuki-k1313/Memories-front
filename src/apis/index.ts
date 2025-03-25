@@ -8,7 +8,8 @@ import { PatchDiaryRequestDto, PostDiaryRequestDto } from './dto/request/diary';
 import { GetDiaryResponseDto, GetMyDiaryResponseDto } from './dto/response/diary';
 import { GetSignInUserResponseDto } from './dto/response/user';
 import { PostConcentrationRequestDto, PostMemoryRequestDto } from './dto/request/test';
-import { GetConcentrationResponseDto, GetMemoryResponseDto } from './dto/response/test';
+import { GetConcentrationResponseDto, GetMemoryResponseDto, GetRecentlyConcentrationResponseDto, GetRecentlyMemoryResponseDto } from './dto/response/test';
+import { PatchUserRequestDto } from './dto/request/user';
 
 // variable: URL 상수 //
 const API_DOMAIN = process.env.REACT_APP_API_DOMAIN;
@@ -31,6 +32,7 @@ const DELETE_DIARY_URL = (diaryNumber: number | string) => `${DIARY_MODULE_URL}/
 const USER_MODULE_URL = `${API_DOMAIN}/api/v1/user`;
 
 const GET_SIGN_IN_USER_URL = `${USER_MODULE_URL}/sign-in`;
+const PATCH_USER_URL = `${USER_MODULE_URL}`;
 
 const TEST_MODULE_URL = `${API_DOMAIN}/api/v1/test`;
 
@@ -38,6 +40,12 @@ const POST_MEMORY_URL = `${TEST_MODULE_URL}/memory`;
 const POST_CONCENTRATION_URL = `${TEST_MODULE_URL}/concentration`;
 const GET_MEMORY_URL = `${TEST_MODULE_URL}/memory`;
 const GET_CONCENTRATION_URL = `${TEST_MODULE_URL}/concentration`;
+const GET_RECENTLY_MEMORY_URL = `${TEST_MODULE_URL}/memory/recently`;
+const GET_RECENTLY_CONCENTRATION_URL = `${TEST_MODULE_URL}/concentration/recently`;
+
+const FILE_UPLOAD_URL = `${API_DOMAIN}/file/upload`;
+
+const multipartFromData = `$Content-Type: multipart/from-data`;
 
 // function: Authorization Bearer 헤더 //
 const bearerAuthorization = (accessToken: string) => ({ headers: { 'Authorization': `Bearer ${accessToken}`} })
@@ -128,9 +136,17 @@ export const getSignInUserRequest = async (accessToken: string) => {
     return responseBody;
 };
 
+// function: patch user API 요청 함수 //
+export const patchUserRequest = async (requestBody: PatchUserRequestDto, accessToken: string) => {
+    const responseBody = await axios.patch(PATCH_USER_URL, requestBody, bearerAuthorization(accessToken))
+        .then(responseSuccessHandler)
+        .catch(responseErrorHandler);
+    return responseBody;
+}; 
+
 // function: post memory API 요청 함수 //
 export const postMemoryRequest = async (requestBody: PostMemoryRequestDto, accessToken: string) => {
-    const responseBody = await axios.post(POST_MEMORY_URL, requestBody ,bearerAuthorization(accessToken))
+    const responseBody = await axios.post(POST_MEMORY_URL, requestBody, bearerAuthorization(accessToken))
         .then(responseSuccessHandler)
         .catch(responseErrorHandler);
     return responseBody;
@@ -138,7 +154,7 @@ export const postMemoryRequest = async (requestBody: PostMemoryRequestDto, acces
 
 // function: post concentration API 요청 함수 //
 export const postConcentrationRequest = async (requestBody: PostConcentrationRequestDto, accessToken: string) => {
-    const responseBody = await axios.post(POST_CONCENTRATION_URL, requestBody ,bearerAuthorization(accessToken))
+    const responseBody = await axios.post(POST_CONCENTRATION_URL, requestBody, bearerAuthorization(accessToken))
         .then(responseSuccessHandler)
         .catch(responseErrorHandler);
     return responseBody;
@@ -146,7 +162,7 @@ export const postConcentrationRequest = async (requestBody: PostConcentrationReq
 
 // function: get memory API 요청 함수 //
 export const getMemoryRequest = async (accessToken: string) => {
-    const responseBody = await axios.get(GET_MEMORY_URL ,bearerAuthorization(accessToken))
+    const responseBody = await axios.get(GET_MEMORY_URL, bearerAuthorization(accessToken))
         .then(responseSuccessHandler<GetMemoryResponseDto>)
         .catch(responseErrorHandler);
     return responseBody;
@@ -154,8 +170,33 @@ export const getMemoryRequest = async (accessToken: string) => {
 
 // function: get concentration API 요청 함수 //
 export const getConcentrationRequest = async (accessToken: string) => {
-    const responseBody = await axios.get(GET_CONCENTRATION_URL ,bearerAuthorization(accessToken))
+    const responseBody = await axios.get(GET_CONCENTRATION_URL, bearerAuthorization(accessToken))
         .then(responseSuccessHandler<GetConcentrationResponseDto>)
         .catch(responseErrorHandler);
     return responseBody;
+};
+
+// function: get recently memory API 요청 함수 //
+export const getRecentlyMemoryRequest = async (accessToken: string) => {
+    const responseBody = await axios.get(GET_RECENTLY_MEMORY_URL, bearerAuthorization(accessToken))
+        .then(responseSuccessHandler<GetRecentlyMemoryResponseDto>)
+        .catch(responseErrorHandler);
+    return responseBody;
+};
+
+
+// function: get recently concentration API 요청 함수 //
+export const getRecentlyConcentrationRequest = async (accessToken: string) => {
+    const responseBody = await axios.get(GET_RECENTLY_CONCENTRATION_URL, bearerAuthorization(accessToken))
+        .then(responseSuccessHandler<GetRecentlyConcentrationResponseDto>)
+        .catch(responseErrorHandler);
+    return responseBody;
+};
+
+// function: file upload 요청 함수 //
+export const fileUploadRequest = async (requestBody: FormData) => {
+    const responseBody = await axios.post(FILE_UPLOAD_URL, requestBody, { headers: { multipartFromData } })
+        .then(responseSuccessHandler<string>)
+        .catch(error => null);
+    return responseBody
 };
