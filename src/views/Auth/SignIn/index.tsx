@@ -14,7 +14,7 @@ import { ACCESS_TOKEN, MAIN_ABSOLUTE_PATH, ROOT_PATH } from 'src/constants';
 
 
 // interface: 로그인 컴포넌트 속성 //
-interface Props {
+interface Props { 
   onPageChange: (page: AuthPage) => void;
 }
 

@@ -13,7 +13,7 @@ import { JOIN_TYPE, ROOT_PATH, SNS_ID } from 'src/constants';
 import './style.css';
 
 // interface: 회원가입 컴포넌트 속성 //
-interface Props {
+interface Props { 
   onPageChange: (page: AuthPage) => void;
 }
 
