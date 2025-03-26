@@ -43,4 +43,4 @@ export default function InputBox(props: Props) {
       </div>
     </div>
   )
-}
+} 
