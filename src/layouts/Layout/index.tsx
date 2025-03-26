@@ -5,9 +5,6 @@ import { ACCESS_TOKEN, AUTH_ABSOLUTE_PATH, CONCENTRATION_TEST_ABSOLUTE_PATH, DIA
 
 import './style.css';
 import { useCookies } from 'react-cookie';
-import { getSignInUserRequest } from 'src/apis';
-import { GetSignInUserResponseDto } from 'src/apis/dto/response/user';
-import { ResponseDto } from 'src/apis/dto/response';
 import { useSignInUserStore } from 'src/stores';
 import { useSignInUser } from 'src/hooks';
 
