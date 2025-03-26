@@ -1,140 +1,90 @@
-#diary-main-wrapper {
-    display: flex;
-    flex-direction: column;
-
-    gap: 30px;
-    width: 1180px;
-
-    margin: 0 auto;
+#diary-write-wrapper {
+  margin: 0 auto;
+  width: 1180px;
 }
 
-#diary-main-wrapper .jumbotron {
-    display: flex;
-    justify-content: center;
+#diary-write-wrapper .write-container {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
 
-    border-radius: 10px;
-    padding: 40px 0;
-    
-    background-color: var(--White);
+  border-radius: 10px;
+  padding: 24px;
+
+  background-color: var(--White);
 }
 
-#diary-main-wrapper .jumbotron-box {
-    display: flex;
-    flex-direction: column;
+#diary-write-wrapper .write-title {
+  color: var(--Lightmode-Grey);
 
-    gap: 30px;
+  font-size: 24px;
+  font-weight: 700;
 }
 
-#diary-main-wrapper .jumbotron-content-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    gap: 16px;
+#diary-write-wrapper .contents-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
-#diary-main-wrapper .jumbotron-title {
-    color: var(--Lightmode-Grey);
-
-    font-size: 24px;
-    font-weight: 700;
+#diary-write-wrapper .input-row-box {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
-#diary-main-wrapper .jumbotron-content {
-    white-space: pre-wrap;
-    
-    text-align: center;
-    color: var(--Lightmode-Grey);
 
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 140%;
+#diary-write-wrapper .input-row-box .title, 
+#diary-write-wrapper .input-column-box .title{
+  width: 50px;
+
+  color: var(--Lightmode-Grey);
+  font-size: 16px;
+  font-weight: 700;
 }
 
-#diary-main-wrapper .jumbotron-button-box {
-    display: flex;
-    justify-content: center;
+#diary-write-wrapper .input-row-box .content {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+
+  color: var(--Lightmode-Grey);
+
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
 }
 
-#diary-main-wrapper .diary-list-container {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
+#diary-write-wrapper .input-row-box .content.active {
+  color: var(--Primary);
 }
 
-#diary-main-wrapper .diary-list-table {
-    border-radius: 10px;
-
-    background-color: var(--White);
+#diary-write-wrapper .input-row-box .content.pointer {
+  cursor: pointer;
 }
 
-.diary-list-table>.tr {
-    display: flex;
-    box-sizing: border-box;
-    height:  50px;
-    border-bottom: 1px solid var(--Lightmode-Grey3);
-
-    cursor: pointer;
+#diary-write-wrapper .input-column-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.diary-list-table>.tr:first-child {
-    cursor: default;
+#diary-write-wrapper .input-column-box input {
+  border-radius: 6px;
+  border: 1px solid var(--Lightmode-Grey3);
+  padding: 8px 16px;
+
+  outline: none;
+
+  color: var(--Lightmode-Grey);
+
+  font-family: Inter;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 175%;
 }
 
-.diary-list-table>.tr:last-child {
-    border: none;
-}
-
-.diary-list-table .th,
-.diary-list-table .td {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
-    box-sizing: border-box;
-    width: 192px;
-    border-right: 1px solid var(--Lightmode-Grey3);
-
-    color: var(--Lightmode-Grey);
-
-    font-size: 16px;
-    font-weight: 700;
-}
-
-.diary-list-table .td {
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 20px;
-}
-
-.diary-list-table .th:last-child,
-.diary-list-table .td:last-child {
-    border: none;
-}
-
-.diary-list-table .th.title,
-.diary-list-table .td.title {
-    display: block;
-
-    flex: 1;
-    justify-content: start;
-
-    box-sizing: border-box;
-    padding: 0 60px;
-
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    line-height: 50px;
-}
-
-.diary-list-table .td .feeling-box {
-    display: flex;
-    align-items: center;
-    gap: 2px;
-}
-
-#diary-main-wrapper .pagination-container {
-    display: flex;
-    justify-content: center;
+#diary-write-wrapper .button-box {
+  display: flex;
+  justify-content: end;
 }

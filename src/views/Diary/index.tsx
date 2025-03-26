@@ -1,147 +1,198 @@
-import React, { useEffect } from 'react';
+import React, { ChangeEvent, useState } from 'react'
 
-import { useNavigate } from 'react-router';
-import { ACCESS_TOKEN, DIARY_VIEW_ABSOLUTE_PATH, DIARY_WRITE_ABSOLUTE_PATH } from 'src/constants';
-import { Diary } from 'src/types/interfaces';
-import { usePagination } from 'src/hooks';
-import Pagination from 'src/components/Pagination';
-import { getMyDiaryRequest } from 'src/apis';
-import { useCookies } from 'react-cookie';
-import { GetMyDiaryResponseDto } from 'src/apis/dto/response/diary';
-import { ResponseDto } from 'src/apis/dto/response';
+import TextEditor from 'src/components/TextEditor';
+import { Feeling, Weather } from 'src/types/aliases';
+
+import dayjs from 'dayjs';
 
 import './style.css';
+import { postDiaryRequest } from 'src/apis';
+import { useCookies } from 'react-cookie';
+import { ACCESS_TOKEN, DIARY_ABSOLUTE_PATH } from 'src/constants';
+import { PostDiaryRequestDto } from 'src/apis/dto/request/diary';
+import { ResponseDto } from 'src/apis/dto/response';
+import { useNavigate } from 'react-router';
 
-// variable: 점보트론 컨텐츠 //
-const JUMBOTRON_CONTENT = '일기 작성은 하루의 사건, 감정, 생각을 기록하여 단기 기억 능력 향상에 도움을 주며, \n장기 기억으로 변환하는데 도움을 줍니다.\n\n일기를 쓰는 행위 자체가 주의를 기울이는 활동이므로 주의력 및\n집중력 향상에 도움을 줍니다.\n\n일기 작성을 통해 단어를 떠올리고 문장을 조작하는 능력을 지속적으로\n연습하여 언어 능력 유지에 도움을 줍니다.';
+// component: 일기 작성 화면 컴포넌트 //
+export default function DiaryWrite() {
 
-// interface: 일기 테이블 레코드 컴포넌트 속성 //
-interface TableItemProps {
-    diary: Diary
-}
+  // state: 쿠키 상태 //
+  const [cookies] = useCookies();
 
-// component: 일기 테이블 레코드 컴포넌트 //
-function TableItem({ diary }: TableItemProps) {
+  // state: 일기 작성 내용 상태 //
+  const [weather, setWeather] = useState<Weather | ''>('');
+  const [feeling, setFeeling] = useState<Feeling | ''>('');
+  const [title, setTitle] = useState<string>('');
+  const [content, setContent] = useState<string>('');
 
-    const { diaryNumber, writeDate, title, weather, feeling } = diary;
+  // variable: access token //
+  const accessToken = cookies[ACCESS_TOKEN];
 
-    // variable: 기분 아이콘 클래스 //
-    const feelingIconClass = `feeling-icon ${
-        feeling === '보통' ? 'normal' :
-        feeling === '행복' ? 'happy' :
-        feeling === '즐거움' ? 'funny' :
-        feeling === '슬픔' ? 'sad' :
-        feeling === '분노' ? 'angry' : ''
-    }`;
+  // variable: 오늘 날짜 //
+  const today = dayjs().format('YYYY-MM-DD');
 
-    // function: 네비게이터 함수 //
-    const navigator = useNavigate();
+  // variable: 날씨 컨텐츠 클래스 //
+  const sunContentClass = 
+    weather === '맑음' ? 'content active' : 'content pointer';
+  const cloudContentClass = 
+    weather === '흐림' ? 'content active' : 'content pointer';
+  const rainContentClass = 
+    weather === '비' ? 'content active' : 'content pointer';
+  const snowContentClass = 
+    weather === '눈' ? 'content active' : 'content pointer';
+  const fogContentClass = 
+    weather === '안개' ? 'content active' : 'content pointer';
 
-    // event handler: 레코드 클릭 이벤트 처리 //
-    const onClick = () => {
-        navigator(DIARY_VIEW_ABSOLUTE_PATH(diaryNumber));
+  // variable: 날씨 아이콘 클래스 //
+  const sunIconClass = 
+    weather === '맑음' ? 'weather-icon sun-active' : 'weather-icon sun';
+  const cloudIconClass = 
+    weather === '흐림' ? 'weather-icon cloud-active' : 'weather-icon cloud';
+  const rainIconClass = 
+    weather === '비' ? 'weather-icon rain-active' : 'weather-icon rain';
+  const snowIconClass = 
+    weather === '눈' ? 'weather-icon snow-active' : 'weather-icon snow';
+  const fogIconClass = 
+    weather === '안개' ? 'weather-icon fog-active' : 'weather-icon fog';
+
+  // variable: 기분 컨텐츠 클래스 //
+  const happyContentClass = 
+    feeling === '행복' ? 'content active' : 'content pointer';
+  const funnyContentClass = 
+    feeling === '즐거움' ? 'content active' : 'content pointer';
+  const normalContentClass = 
+    feeling === '보통' ? 'content active' : 'content pointer';
+  const sadContentClass = 
+    feeling === '슬픔' ? 'content active' : 'content pointer';
+  const angryContentClass = 
+    feeling === '분노' ? 'content active' : 'content pointer';
+
+  // variable: 기분 아이콘 클래스 //
+  const happyIconClass = 
+    feeling === '행복' ? 'feeling-icon happy-active' : 'feeling-icon happy';
+  const funnyIconClass = 
+    feeling === '즐거움' ? 'feeling-icon funny-active' : 'feeling-icon funny';
+  const normalIconClass = 
+    feeling === '보통' ? 'feeling-icon normal-active' : 'feeling-icon normal';
+  const sadIconClass = 
+    feeling === '슬픔' ? 'feeling-icon sad-active' : 'feeling-icon sad';
+  const angryIconClass = 
+    feeling === '분노' ? 'feeling-icon angry-active' : 'feeling-icon angry';
+
+  // variable: 일기 작성 가능 여부 //
+  const isActive = weather !== '' && feeling !== '' && title !== '' && content !== '';
+  // variable: 일기 작성 버튼 클래스 //
+  const writeButtonClass = isActive ? 'button middle primary' : 'button middle disable';
+
+  // function: 네비게이터 함수 //
+  const navigator = useNavigate();
+
+  // function: post diary response 처리 함수 //
+  const postDiaryResponse = (responseBody: ResponseDto | null) => {
+    const message = 
+      !responseBody ? '서버에 문제가 있습니다.' :
+      responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' :
+      responseBody.code === 'AF' ? '인증에 실패했습니다.' : '';
+    
+    const isSuccess = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccess) {
+      alert(message);
+      return;
+    }
+
+    navigator(DIARY_ABSOLUTE_PATH);
+  };
+
+  // event handler: 날씨 변경 이벤트 처리 //
+  const onWeatherChangeHandler = (weather: Weather) => {
+    setWeather(weather);
+  };
+
+  // event handler: 기분 변경 이벤트 처리 //
+  const onFeelingChangeHandler = (feeling: Feeling) => {
+    setFeeling(feeling);
+  };
+
+  // event handler: 제목 변경 이벤트 처리 //
+  const onTitleChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    setTitle(value);
+  };
+
+  // event handler: 내용 변경 이벤트 처리 //
+  const onContentChangeHandler = (content: string) => {
+    setContent(content);
+  };
+
+  // event handler: 일기 작성 버튼 클릭 이벤트 처리 //
+  const onWriteButtonClickHandler = () => {
+    if (!isActive || !accessToken) return;
+
+    const requestBody: PostDiaryRequestDto = {
+      weather, feeling, title, content
     };
+    postDiaryRequest(requestBody, accessToken).then(postDiaryResponse);
+  };
 
-    // render: 일기 테이블 레코드 컴포넌트 렌더링 //
-    return (
-    <div className='tr' onClick={onClick}>
-        <div className='td'>{writeDate}</div>
-        <div className='td title'>{title}</div>
-        <div className='td'>{weather}</div>
-        <div className='td'>
-            <div className='feeling-box'>
-                <div className={feelingIconClass}></div>
-                <div className='feeling-text'>{feeling}</div>
+  // render: 일기 작성 화면 컴포넌트 렌더링 //
+  return (
+    <div id='diary-write-wrapper'>
+      <div className='write-container'>
+        <div className='write-title'>일기 작성</div>
+        <div className='contents-container'>
+          <div className='input-row-box'>
+            <div className='title'>날짜</div>
+            <div className='content'>{today}</div>
+          </div>
+          <div className='input-row-box'>
+            <div className='title'>날씨</div>
+            <div className={sunContentClass} onClick={() => onWeatherChangeHandler('맑음')}>
+              <div className={sunIconClass}></div>맑음
             </div>
+            <div className={cloudContentClass} onClick={() => onWeatherChangeHandler('흐림')}>
+              <div className={cloudIconClass}></div>흐림
+            </div>
+            <div className={rainContentClass} onClick={() => onWeatherChangeHandler('비')}>
+              <div className={rainIconClass}></div>비
+            </div>
+            <div className={snowContentClass} onClick={() => onWeatherChangeHandler('눈')}>
+              <div className={snowIconClass}></div>눈
+            </div>
+            <div className={fogContentClass} onClick={() => onWeatherChangeHandler('안개')}>
+              <div className={fogIconClass}></div>안개
+            </div>
+          </div>
+          <div className='input-row-box'>
+            <div className='title'>기분</div>
+            <div className={happyContentClass} onClick={() => onFeelingChangeHandler('행복')}>
+              <div className={happyIconClass}></div>행복
+            </div>
+            <div className={funnyContentClass} onClick={() => onFeelingChangeHandler('즐거움')}>
+              <div className={funnyIconClass}></div>즐거움
+            </div>
+            <div className={normalContentClass} onClick={() => onFeelingChangeHandler('보통')}>
+              <div className={normalIconClass}></div>보통
+            </div>
+            <div className={sadContentClass} onClick={() => onFeelingChangeHandler('슬픔')}>
+              <div className={sadIconClass}></div>슬픔
+            </div>
+            <div className={angryContentClass} onClick={() => onFeelingChangeHandler('분노')}>
+              <div className={angryIconClass}></div>분노
+            </div>
+          </div>
+          <div className='input-column-box'>
+            <div className='title'>제목</div>
+            <input type='text' value={title} placeholder='제목을 입력하세요' onChange={onTitleChangeHandler} />
+          </div>
+          <div className='input-column-box'>
+            <div className='title'>내용</div>
+            <TextEditor content={content} setContent={onContentChangeHandler} />
+          </div>
+          <div className='button-box'>
+            <div className={writeButtonClass} onClick={onWriteButtonClickHandler}>작성 완료</div>
+          </div>
         </div>
+      </div>
     </div>
-    )
-}
-
-// component: 일기 메인 화면 컴포넌트 //
-export default function DiaryMain() {
-
-    // state: cookie 상태 //
-    const [cookies] = useCookies();
-
-    // state: 페이지 네이션 상태
-    const { 
-        currentPage, setCurrentPage, currentSection, setCurrentSection, 
-        totalSection, setTotalList, viewList, pageList
-    } = usePagination<Diary>();
-
-    // variable: access token //
-    const accessToken = cookies[ACCESS_TOKEN];
-
-    // function: 네비게이터 함수 //
-    const navigator = useNavigate();
-
-    // function: get my diary response 처리 함수 //
-    const getMyDiaryResponse = (responseBody: GetMyDiaryResponseDto | ResponseDto | null) => {
-        const message = 
-            !responseBody ? '서버에 문제가 있습니다.' :
-            responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' :
-            responseBody.code === 'AF' ? '인증에 실패했습니다.' : '';
-
-        const isSuccess = responseBody !== null && responseBody.code === 'SU';
-        if(!isSuccess) {
-            alert(message);
-            return;
-        }
-
-        const { diaries } = responseBody as GetMyDiaryResponseDto;
-        setTotalList(diaries);
-
-    };
-
-    // event handler: 작성하기 버튼 클릭 이벤트 처리 //
-    const onWriteButtonClickHandler = () => {
-        navigator(DIARY_WRITE_ABSOLUTE_PATH);
-    };
-
-    // effect: 컴포넌트 로드시 실행할 함수 //
-    useEffect(() => {
-        if(!accessToken) return;
-        getMyDiaryRequest(accessToken).then(getMyDiaryResponse);
-    }, []);
-
-    // render: 일기 메인 화면 컴포넌트 렌더링 //
-    return (
-        <div id='diary-main-wrapper'>
-            <div className='jumbotron'>
-                <div className='jumbotron-box'>
-                    <div className='jumbotron-content-box'>
-                        <div className='jumbotron-title'>일기</div>
-                        <div className='jumbotron-content'>{JUMBOTRON_CONTENT}</div>
-                    </div>
-                    <div className='jumbotron-button-box'>
-                        <div className='button primary middle' onClick={onWriteButtonClickHandler}>작성하기</div>
-                    </div>
-                </div>
-            </div>
-            <div className='diary-list-container'>
-                <div className='diary-list-table'>
-                    <div className='tr'>
-                        <div className='th'>날짜</div>
-                        <div className='th title'>제목</div>
-                        <div className='th'>날씨</div>
-                        <div className='th'>기분</div>
-                    </div>
-                    {viewList.map((diary, index) => <TableItem key={index} diary={diary} />)}
-                </div>
-                <div className='pagination-container'>
-                    {totalSection !== 0 &&
-                    <Pagination
-                        currentPage={currentPage}
-                        currentSection={currentSection}
-                        totalSection={totalSection}
-                        pageList={pageList}
-                        setCurrentPage={setCurrentPage}
-                        setCurrentSection={setCurrentSection}
-                    />
-                    }
-                </div>
-            </div>
-        </div>
-    )
+  )
 }
