@@ -1,56 +1,56 @@
 #modal-wrapper {
-	position: fixed;
-	top: 0;
-	left: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
 
-	width: 100vw;
-	min-width: 1440px;
-	height: 100vh;
+  width: 100vw;
+  min-width: 1440px;
+  height: 100vh;
 
-	background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 #modal-wrapper .modal-container {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 
-	display: flex;
-	flex-direction: column;
-	gap: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 
-	box-sizing: border-box;
-	border-radius: 8px;
-	padding: 24px;
-	width: 580px;
+  box-sizing: border-box;
+  border-radius: 8px;
+  padding: 24px;
+  width: 580px;
 
-	background-color: var(--White);
+  background-color: var(--White);
 }
 
 #modal-wrapper .modal-head {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 #modal-wrapper .modal-head .title {
-	color: var(--Lightmode-Grey);
+  color: var(--Lightmode-Grey);
 
-	font-size: 24px;
-	font-weight: 700;
+  font-size: 24px;
+  font-weight: 700;
 }
 
 #modal-wrapper .modal-head .close-button {
-	width: 32px;
-	height: 32px;
+  width: 32px;
+  height: 32px;
 
-	background-image: url(src/assets/images/close.png);
-	background-size: 100% 100%;
+  background-image: url(src/assets/images/close.png);
+  background-size: 100% 100%;
 
-	cursor: pointer;
+  cursor: pointer;
 }
 
 #modal-wrapper .modal-body {
-	max-height: 800px;
+  max-height: 800px;
 }
