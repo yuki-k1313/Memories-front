@@ -186,9 +186,8 @@ function UserUpdate({onMadalViweChange}: UserUpdateProps) {
 				<div className='profile-image' style={profileImageStyle} onClick={onProfileClickHandler} />
 				<input ref={fileRef} style={{ display: 'none' }} type='file' accept='image/png, image/jpeg' onChange={onFileChangeHandler} />
 			</div>
-
-			<InputBox label='이름' value={updateName} placeholder='이름을 입력해주세요.' type='text' message='' onChange={onNameChangeHandler} />
-
+			<InputBox label='이름' value={updateName} placeholder='이름을 입력해주세요' type='text' message='' onChange={onNameChangeHandler} />
+	
 			<div className='check-box'>
 				<div className='label'>성별</div>
 				<div className='check-item-box'>
@@ -196,12 +195,13 @@ function UserUpdate({onMadalViweChange}: UserUpdateProps) {
 					<div className={womanClass} onClick={() => onGenderChangeHandler('woman')}>여성</div>
 				</div>
 			</div>
-
-			<InputBox label='나이' value={updateAge} placeholder='나이를 입력해주세요.' type='text' message='' onChange={onAgeChangeHandler} />
-
-			<InputBox label='주소' value={updateAddress} placeholder='주소를 입력해주세요.' type='text' message='' onChange={() => {}} readOnly isButtonActive buttonName='주소 검색' onButtonClick={onSearchAddressClickHandler} />
-
-			<InputBox label='상세주소' value={updateDetailAddress} placeholder='상세주소를 입력해주세요.' type='text' message='' onChange={onDetailAddressChangeHandler} />
+	
+			<InputBox label='나이' value={updateAge} placeholder='나이를 입력해주세요' type='text' message='' onChange={onAgeChangeHandler} />
+	
+			<InputBox label='주소' value={updateAddress} placeholder='주소를 입력해주세요' type='text' message='' onChange={() => {}} readOnly isButtonActive buttonName='주소 검색' onButtonClick={onSearchAddressClickHandler} />
+	
+			<InputBox label='상세 주소' value={updateDetailAddress} placeholder='상세 주소를 입력해주세요' type='text' message='' onChange={onDetailAddressChangeHandler} />
+	
 			<div className='button primary fullwidth' onClick={onUpdateButtonClick}>수정</div>
 		</div>
 	)
