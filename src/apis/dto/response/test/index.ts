@@ -4,8 +4,8 @@ import GetRecentlyMemoryResponseDto from './get-recently-memory.response.dto';
 import GetRecentlyConcentrationResponseDto from './get-recently-concentration.response.dto';
 
 export type {
-	GetMemoryResponseDto,
-	GetConcentrationResponseDto,
-	GetRecentlyMemoryResponseDto,
-	GetRecentlyConcentrationResponseDto
+  GetMemoryResponseDto,
+  GetConcentrationResponseDto,
+  GetRecentlyMemoryResponseDto,
+  GetRecentlyConcentrationResponseDto
 }
