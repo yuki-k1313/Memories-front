@@ -30,6 +30,9 @@ const GET_DIARY_URL = (diaryNumber: number | string) => `${DIARY_MODULE_URL}/${d
 const PATCH_DIARY_URL = (diaryNumber: number | string) => `${DIARY_MODULE_URL}/${diaryNumber}`;
 const DELETE_DIARY_URL = (diaryNumber: number | string) => `${DIARY_MODULE_URL}/${diaryNumber}`;
 
+const PUT_EMPATHY_URL = (diaryNumber: number | string) => `${DIARY_MODULE_URL}/${diaryNumber}/empathy`;
+const GET_EMPATHY_URL = (diaryNumber: number | string) => `${DIARY_MODULE_URL}/${diaryNumber}/empathy`;
+
 const USER_MODULE_URL = `${API_DOMAIN}/api/v1/user`;
 
 const GET_SIGN_IN_USER_URL = `${USER_MODULE_URL}/sign-in`;
@@ -132,6 +135,22 @@ export const deleteDiaryRequest = async (diaryNumber: number | string, accessTok
     .catch(responseErrorHandler)
   return responseBody;
 };
+
+// function: put empathy API 요청 함수 //
+export const putEmpathyRequest = async (diaryNumber: number | string, accessToken: string) => {
+  const responseBody = await axios.put(PUT_EMPATHY_URL(diaryNumber), {},bearerAuthorization(accessToken))
+    .then(responseSuccessHandler)
+    .catch(responseErrorHandler)
+  return responseBody;
+}
+
+// function: get empathy API 요청 함수 //
+export const getEmpathyRequest = async (diaryNumber: number | string, accessToken: string) => {
+  const responseBody = await axios.get(GET_EMPATHY_URL(diaryNumber), bearerAuthorization(accessToken))
+    .then(responseSuccessHandler)
+    .catch(responseErrorHandler)
+  return responseBody;
+}
 
 // function: get sign in user API 요청 함수 //
 export const getSignInUserRequest = async (accessToken: string) => {
