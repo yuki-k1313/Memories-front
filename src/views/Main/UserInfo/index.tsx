@@ -75,7 +75,7 @@ function UserUpdate() {
             return;
         }
 
-		getSignInUser;
+		getSignInUser();
 	};
 
 	// event handler: 프로필 사진 클릭 이벤트 처리 //
