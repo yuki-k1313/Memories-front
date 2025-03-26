@@ -5,7 +5,7 @@ import { GetSignInUserResponseDto } from "src/apis/dto/response/user";
 import { ACCESS_TOKEN, ROOT_PATH } from "src/constants";
 import { useSignInUserStore } from "src/stores";
 
-const useSignInUser = () => {
+const useSignInUser = () => { 
 
   // state: cookie 상태 //
   const [cookies, _, removeCookie] = useCookies();
