@@ -19,7 +19,7 @@ export default function Layout() {
     const [cookies, _, removeCookie] = useCookies();
 
     // state: My Content List 요소 참조 //
-    const MyContentListRef = useRef<HTMLDivElement | null>(null);
+    const myContentListRef = useRef<HTMLDivElement | null>(null);
 
     // state: 로그인 유저 정보 상태 //
     const { resetSignInUser } = useSignInUserStore();
@@ -38,7 +38,7 @@ export default function Layout() {
     // variable: 집중력 검사 클래스 //
     const concentrationTestClass = pathname.startsWith(CONCENTRATION_TEST_ABSOLUTE_PATH) ? 'navigation-item active' : 'navigation-item';
 
-    //event handler: 홈 클릭 이벤트 처리 //
+    // event handler: 홈 클릭 이벤트 처리 //
     const onHomeClickHandler = () => {
         navigator(MAIN_ABSOLUTE_PATH);
     };
@@ -71,33 +71,32 @@ export default function Layout() {
 
     // effect: cookie의 accessToken이 변경될 시 실행할 함수 //
     useEffect(() => {
-        if(!cookies[ACCESS_TOKEN]) return;
-        
+        if (!cookies[ACCESS_TOKEN]) return;
+        getSignInUser();
     }, [cookies[ACCESS_TOKEN]]);
 
     // effect: cookie의 accessToken과 경로가 변경될 시 실행할 함수 //
     useEffect(() => {
-        if(!cookies[ACCESS_TOKEN]) navigator(AUTH_ABSOLUTE_PATH);
-        getSignInUser;
-    },[cookies[ACCESS_TOKEN], pathname]);
+        if (!cookies[ACCESS_TOKEN]) navigator(AUTH_ABSOLUTE_PATH);
+    }, [cookies[ACCESS_TOKEN], pathname]);
 
     // effect: My Content 드롭다운 상태가 변경될시 실행할 함수 //
     useEffect(() => {
         const onOutsideClickHandler = (event: any) => {
             if (
-                MyContentListRef.current && 
-                !MyContentListRef.current.contains(event.target as Node)
+                myContentListRef.current && 
+                !myContentListRef.current.contains(event.target as Node)
             ) {
                 setShowMyContent(false);
             }
         };
-
+    
         if (!showMyContent) return;
-
+    
         document.addEventListener('mousedown', onOutsideClickHandler);
-
+    
     }, [showMyContent]);
-
+    
     // render: 공통 레이아웃 컴포넌트 렌더링 //
     return (
         <div id='layout-wrapper'>
@@ -111,7 +110,7 @@ export default function Layout() {
                 </div>
                 <div className='my-content' onClick={onMyContentClickHandler}>
                     {showMyContent &&
-                    <div ref={MyContentListRef} className='my-content-list'>
+                    <div ref={myContentListRef} className='my-content-list'>
                         <div className='my-content-item' onClick={onDiaryClickHandler}>일기</div>
                         <div className='my-content-item' onClick={onSignOutClickHandler}>로그아웃</div>
                     </div>

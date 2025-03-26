@@ -11,8 +11,13 @@ import { ACCESS_TOKEN } from 'src/constants';
 import { ResponseDto } from 'src/apis/dto/response';
 import { useSignInUser } from 'src/hooks';
 
+// interface: 로그인 사용자 정보 수정 컴포넌틑 속성 /
+interface UserUpdateProps {
+	onMadalViweChange: () => void;
+}
+
 // component: 로그인 사용자 정보 수정 컴포넌트 //
-function UserUpdate() {
+function UserUpdate({onMadalViweChange}: UserUpdateProps) {
 
 	// state: cookie 상태 //
 	const [cookies] = useCookies();
@@ -24,17 +29,17 @@ function UserUpdate() {
 	const fileRef = useRef<HTMLInputElement | null>(null);
 
 	// state: 프로필 이미지 미리보기 상태 //
-	const [previewProfile, setPreviewProfile] = useState<string | null>(null);
+	const [previewProfile, setPrviewProfile] = useState<string | null>(null);
 	// state: 수정 사용자 이름 상태 //
 	const [updateName, setUpdateName] = useState<string>('');
-	// state: 수정 사용자 성별 상태  //
+	// state: 수정 사용자 성별 상태 //
 	const [updateGender, setUpdateGender] = useState<string>('');
-	// state: 수정 사용자 나이 상태  //
+	// state: 수정 사용자 나이 상태 //
 	const [updateAge, setUpdateAge] = useState<string>('');
 	// state: 수정 주소 상태 //
 	const [updateAddress, setUpdateAddress] = useState<string>('');
 	// state: 수정 상세 주소 상태 //
-	const [updateDedatilAddress, setUpdateDetailAddress] = useState<string>('');
+	const [updateDetailAddress, setUpdateDetailAddress] = useState<string>('');
 	// state: 사용자 프로필 이미지 상태 //
 	const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
 
@@ -42,11 +47,9 @@ function UserUpdate() {
 	const accessToken = cookies[ACCESS_TOKEN];
 
 	// variable: 프로필 이미지 스타일 //
-	const profileImageStyle = { cursur: 'pointer', backgroundImage: `url(${previewProfile ? previewProfile : DefaultProfile})` };
-
+	const profileImageStyle = { cursor: 'pointer', backgroundImage: `url(${previewProfile ? previewProfile : DefaultProfile})` };
 	// variable: 남성 클래스 //
 	const manClass = updateGender === 'man' ? 'check-item active' : 'check-item';
-
 	// variable: 여성 클래스 //
 	const womanClass = updateGender === 'woman' ? 'check-item active' : 'check-item';
 
@@ -56,38 +59,39 @@ function UserUpdate() {
 	// function: 다음 포스트 코드 팝업 오픈 함수 //
 	const open = useDaumPostcodePopup();
 
-	// function: 다음 포스트 코드 완료 처리 함수 //
+  // function: 다음 포스트 코드 완료 처리 함수 //
 	const daumPostCompleteHandler = (data: Address) => {
 		const { address } = data;
 		setUpdateAddress(address);
 	};
 
-	// function: patch user response 처리 함수 //
+  // function: patch user response 처리 함수 //
 	const patchUserResponse = (responseBody: ResponseDto | null) => {
-		const message = 
-            !responseBody ? '서버에 문제가 있습니다.' :
-            responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' :
-            responseBody.code === 'AF' ? '인증에 실패했습니다.' : '';
-
-        const isSuccess = responseBody !== null && responseBody.code === 'SU';
-        if(!isSuccess) {
-            alert(message);
-            return;
-        }
+		const message =
+			!responseBody ? '서버에 문제가 있습니다.' :
+			responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : 
+			responseBody.code === 'AF' ? '인증에 실패했습니다.' : '';
+    
+    const isSuccess = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccess) {
+		alert(message);
+		return;
+		}
 
 		getSignInUser();
+		onMadalViweChange();
 	};
 
 	// event handler: 프로필 사진 클릭 이벤트 처리 //
-	const onProgileClickHandler = () => {
-		if(!fileRef.current) return;
+	const onProfileClickHandler = () => {
+		if (!fileRef.current) return;
 		fileRef.current.click();
 	};
-
+	
 	// event handler: 파일 인풋 변경 이벤트 처리 //
 	const onFileChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
 		const { files } = event.target;
-		if(!files || !files.length) return;
+		if (!files || !files.length) return;
 
 		const file = files[0];
 		setProfileImageFile(file);
@@ -95,7 +99,7 @@ function UserUpdate() {
 		const fileReader = new FileReader();
 		fileReader.readAsDataURL(file);
 		fileReader.onloadend = () => {
-			setPreviewProfile(fileReader.result as string);
+			setPrviewProfile(fileReader.result as string);
 		};
 	};
 
@@ -112,10 +116,10 @@ function UserUpdate() {
 
 	// event handler: 사용자 나이 변경 이벤트 처리 //
 	const onAgeChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-		const { value } = event.target
-		const regexp = /^$|^[1-9][0-9]*$/;
+		const { value } = event.target;
+		const regexp = /^$|^[1-9][0-9]{0,2}$/;
 		const isNumber = regexp.test(value);
-		if(!isNumber) return;
+		if (!isNumber) return;
 		setUpdateAge(value);
 	};
 
@@ -124,47 +128,50 @@ function UserUpdate() {
 		open({ onComplete: daumPostCompleteHandler });
 	};
 
-	// event handler: 사용자 상세 주소 변경 이벤트 처리 //
+  	// event handler: 사용자 상세 주소 변경 이벤트 처리 //
 	const onDetailAddressChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-		const { value } = event.target
+		const { value } = event.target;
 		setUpdateDetailAddress(value);
 	};
 
-	// event handler: 수정 버튼 클릭 이벤트 처리 //
+  	// event handler: 수정 버튼 클릭 이벤트 처리 //
 	const onUpdateButtonClick = async () => {
-		const message =
+		const message = 
 			!updateName ? '이름을 입력하세요.' :
-			!updateAge ? '나이를 입력하세요.' :
-			!updateGender ? '성별을 선택하세요.' :
-			!updateAddress ? '주소를 입력하세요' : '';
+			!updateAge ? '나이를 입력하세요.' : 
+			!updateGender ? '성별을 선택하세요.' : 
+			!updateAddress ? '주소를 입력하세요.' : '';
 		const isCheck = updateName && updateAge && updateGender && updateAddress;
-		if(!isCheck) {
+		if (!isCheck) {
 			alert(message);
 			return;
 		}
-		
-		let profileImage: string | null = null;
+
+		let newProfileImage: string | null = null;
 		if (profileImageFile) {
 			const formData = new FormData();
 			formData.append('file', profileImageFile);
-			profileImage = await fileUploadRequest(formData);
+			newProfileImage = await fileUploadRequest(formData);
 		}
+
+		newProfileImage = profileImage === previewProfile ? profileImage : newProfileImage;
 
 		const requestBody: PatchUserRequestDto = {
 			name: updateName, 
 			profileImage, 
 			address: updateAddress, 
-			detailAddress: updateDedatilAddress, 
+			detailAddress: updateDetailAddress, 
 			gender: updateGender, 
-			age: updateAge ? Number(age) : null
-		}
+			age: updateAge ? Number(updateAge) : null 
+		};
 
 		patchUserRequest(requestBody, accessToken).then(patchUserResponse);
+
 	};
 
-	// effect: 컴포넌트 로드시 실행할 함수  //
+  	// effect: 컴포넌트 로드시 실행할 함수 //
 	useEffect(() => {
-		setPreviewProfile(profileImage);
+		setPrviewProfile(profileImage);
 		setUpdateName(name);
 		setUpdateGender(gender ? gender : '');
 		setUpdateAge(age ? String(age) : '');
@@ -176,7 +183,7 @@ function UserUpdate() {
 	return (
 		<div className='user-update-container'>
 			<div className='profile-image-box'>
-				<div className='profile-image' style={profileImageStyle} onClick={onProgileClickHandler} />
+				<div className='profile-image' style={profileImageStyle} onClick={onProfileClickHandler} />
 				<input ref={fileRef} style={{ display: 'none' }} type='file' accept='image/png, image/jpeg' onChange={onFileChangeHandler} />
 			</div>
 
@@ -194,17 +201,17 @@ function UserUpdate() {
 
 			<InputBox label='주소' value={updateAddress} placeholder='주소를 입력해주세요.' type='text' message='' onChange={() => {}} readOnly isButtonActive buttonName='주소 검색' onButtonClick={onSearchAddressClickHandler} />
 
-			<InputBox label='상세주소' value={updateDedatilAddress} placeholder='상세주소를 입력해주세요.' type='text' message='' onChange={onDetailAddressChangeHandler} />
+			<InputBox label='상세주소' value={updateDetailAddress} placeholder='상세주소를 입력해주세요.' type='text' message='' onChange={onDetailAddressChangeHandler} />
 			<div className='button primary fullwidth' onClick={onUpdateButtonClick}>수정</div>
 		</div>
 	)
 }
 
-// component: 로그인 사용자 정보 컴포넌트 //
-export default function UserInfo() {
+	// component: 로그인 사용자 정보 컴포넌트 //
+	export default function UserInfo() {
 
 	// state: 로그인 유저 정보 상태 //
-	const { name, gender, age, address, detailAddress, profileImage } = useSignInUserStore();
+	const { name, age, gender, address, detailAddress, profileImage } = useSignInUserStore();
 
 	// state: 수정 모달 오픈 상태 //
 	const [isUpdateOpen, setUpdateOpen] = useState<boolean>(false);
@@ -214,7 +221,7 @@ export default function UserInfo() {
 	// variable: 성별 //
 	const genderText = !gender ? '' : gender === 'man' ? '남성' : '여성';
 	// variable: 나이 //
-	const ageText = !age ? '' : `${age}세`;
+	const ageText = !age ? '' : `${age} 세`;
 	// variable: 주소 //
 	const addressText = detailAddress ? `${address} ${detailAddress}` : address;
 
@@ -254,7 +261,7 @@ export default function UserInfo() {
 				onClose={onUpdateOpenButtonClickHandler}
 			>
 
-				<UserUpdate />
+				<UserUpdate onMadalViweChange={onUpdateOpenButtonClickHandler} />
 			</Modal>
 			}
 		</div>
