@@ -1,4 +1,4 @@
-export default interface MemoryTest {
+export default interface MemoryTest { 
 	sequence: number;
 	measurementTime: number;
 	testDate: string;
