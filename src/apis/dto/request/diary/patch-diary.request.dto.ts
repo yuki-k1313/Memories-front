@@ -1,9 +1,9 @@
-import { Feeling, Weather } from "src/types/aliases";
+import { Feeling, Weather } from 'src/types/aliases';
 
-// interface: patch diary request DTO //
+// interface: patch diary request body DTO //
 export default interface PatchDiaryRequestDto {
-    weather: Weather;
-    feeling: Feeling;
-    title: string;
-    content: string
+  weather: Weather;
+  feeling: Feeling;
+  title: string;
+  content: string;
 }
