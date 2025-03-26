@@ -1,69 +1,170 @@
-#memory-test-wrapper {
-	margin: 0 auto;
-	width: 1180px;
+#main-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  margin: 0 auto;
+  width: 1180px;
 }
 
-#memory-test-wrapper .container {
-	display: flex;
-	flex-direction: column;
-	gap: 30px;
+#main-wrapper .user-info-container {
+  display: flex;
+  gap: 24px;
 
-	border-radius: 10px;
-	padding: 40px 24px 24px;
+  border-radius: 10px;
+  padding: 24px;
 
-	background-color: var(--White);
+  background-color: var(--White);
 }
 
-#memory-test-wrapper .description-box {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	gap: 16px;
+#main-wrapper .recently-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  border-radius: 10px;
+  padding: 24px;
+
+  background-color: var(--White);
 }
 
-#memory-test-wrapper .description-box .title {
-	color: var(--Lightmode-Grey);
+#main-wrapper .profile-image {
+  border-radius: 6px;
+  width: 134px;
+  height: 180px;
 
-	font-size: 24px;
-	font-weight: 700;
+  background-color: var(--Lightmode-Grey3);
+  background-size: cover;
+  background-position: 50% 50%;
 }
 
-#memory-test-wrapper .description-box .description {
-	color: var(--Lightmode-Grey);
+#main-wrapper .user-info-box {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
-	font: 16px;
-	font-weight: 400;
-	line-height: 140%;
-
-	white-space: pre-wrap;
-	text-align: center;
+  padding: 10px 0;
 }
 
-#memory-test-wrapper .test-box {
-	display: flex;
-	justify-content: center;
-	align-items: center;
+#main-wrapper .user-info-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 
-	border-radius: 10px;
-	height: 573px;
-
-	background-color: var(--Beige);
+  color: var(--Lightmode-Grey);
 }
 
-#memory-test-wrapper .card-container {
-	display: grid;
-	grid-template-columns: 100px 100px 100px 100px;
-	grid-template-rows: 100px 100px 100px 100px;
-	gap: 40px;
+#main-wrapper .user-info-row .title {
+  width: 50px;
 
+  font-size: 16px;
+  font-weight: 700;
 }
 
-#memory-test-wrapper .card-container .reversed-card {
-	background-image: url(src/assets/images/question-mark.png);
-	background-color: rgba(110, 125, 147, 1);
-	background-position: 50% 50%;
-	background-repeat: no-repeat;
-
-	cursor: pointer;
+#main-wrapper .user-info-row .content {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
 }
 
+#main-wrapper .recently-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#main-wrapper .recently-title-box {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+#main-wrapper .recently-title-box .title {
+  color: var(--Lightmode-Grey);
+
+  font-size: 24px;
+  font-weight: 700;
+}
+
+#main-wrapper .info-button {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  border-radius: 6px;
+  padding: 8px 10px;
+
+  background-color: var(--Second);
+
+  color: var(--Primary);
+  
+  font-size: 14px;
+  font-weight: 500;
+
+  cursor: pointer;
+}
+
+#main-wrapper .info-button .icon {
+  width: 16px;
+  height: 16px;
+
+  background-image: url(src/assets/images/info.png);
+  background-size: 100% 100%;
+}
+
+#main-wrapper .recently-chart-box {
+  border-radius: 10px;
+  height: 300px;
+}
+
+#main-wrapper .user-update-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#main-wrapper .user-update-container .profile-image-box {
+  display: flex;
+  justify-content: center;
+}
+
+#main-wrapper .user-update-container .check-box {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+#main-wrapper .user-update-container .check-box .label {
+  color: var(--Lightmode-Grey2);
+  font-size: 16px;
+  font-weight: 400;
+}
+
+#main-wrapper .user-update-container .check-item-box {
+  display: flex;
+  padding-bottom: 20px;
+}
+
+#main-wrapper .user-update-container .check-item {
+  flex: 1;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 44px;
+
+  color: var(--Lightmode-Grey2);
+  font-size: 16px;
+  font-weight: 400;
+
+  cursor: pointer;
+}
+
+#main-wrapper .user-update-container .check-item.active {
+  color: var(--Lightmode-Grey);
+  font-weight: 700;
+
+  cursor: default;
+}
