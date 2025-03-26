@@ -1,71 +1,71 @@
 #memory-test-complete-wrapper {
-	display: flex;
-	flex-direction: column;
-	gap: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 
-	margin: 0 auto;
-	width: 1180px;
+  margin: 0 auto;
+  width: 1180px;
 }
 
 #memory-test-complete-wrapper .container {
-	display: flex;
-	flex-direction: column;
-	gap: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 
-	border-radius: 10px;
-	padding: 40px 24px 24px;
+  border-radius: 10px;
+  padding: 40px 24px 24px;
 
-	background-color: var(--White);
+  background-color: var(--White);
 }
 
 #memory-test-complete-wrapper .description-box {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	gap: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
 }
 
 #memory-test-complete-wrapper .description-box .title {
-	color: var(--Lightmode-Grey);
+  color: var(--Lightmode-Grey);
 
-	font-size: 24px;
-	font-weight: 700;
+  font-size: 24px;
+  font-weight: 700;
 }
 
 #memory-test-complete-wrapper .description-box .description {
-	color: var(--Lightmode-Grey);
+  color: var(--Lightmode-Grey);
 
-	font: 16px;
-	font-weight: 400;
-	line-height: 140%;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 140%;
 
-	white-space: pre-wrap;
-	text-align: center;
+  white-space: pre-wrap;
+  text-align: center;
 }
 
 #memory-test-complete-wrapper .test-box {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	gap: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
 
-	border-radius: 10px;
-	height: 270px;
+  border-radius: 10px;
+  height: 270px;
 
-	background-color: var(--Beige);
+  background-color: var(--Beige);
 }
 
 #memory-test-complete-wrapper .test-box .title {
-	color: var(--Lightmode-Grey);
+  color: var(--Lightmode-Grey);
 
-	font-size: 24px;
-	font-weight: 700;
+  font-size: 24px;
+  font-weight: 700;
 }
 
 #memory-test-complete-wrapper .test-box .result {
-	color: var(--Primary);
+  color: var(--Primary);
 
-	font-size: 24px;
-	font-weight: 700;
+  font-size: 24px;
+  font-weight: 700;
 }
