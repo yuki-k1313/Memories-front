@@ -12,7 +12,7 @@ import { ResponseDto } from 'src/apis/dto/response';
 import { useSignInUser } from 'src/hooks';
 
 // interface: 로그인 사용자 정보 수정 컴포넌트 속성 //
-interface UserUpdateProps {
+interface UserUpdateProps { 
   onModalViewChange: () => void;
 }
 
