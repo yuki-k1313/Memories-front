@@ -315,7 +315,7 @@ export default function DiaryDetail() {
                 {empathies.length}
               </div>
               <div className='sub-box'>
-                <div className='icon comment' /> 
+                <div className='icon comment' />
                 {comments.length}
               </div>
             </div>
